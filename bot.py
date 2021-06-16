@@ -9,6 +9,13 @@ from discord.guild import Guild
 from discord.member import Member
 from discord.role import Role
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+BOT_TOKEN = os.environ.get("bot-token")
+
+
 intents: discord.Intents = discord.Intents.default()
 intents.members = True
 intents.reactions = True
@@ -47,4 +54,4 @@ async def on_ready():
 
 bot.add_cog(ReactionRolesCog(bot))
 bot.add_cog(SupporterRolesCog(bot))
-bot.run('ODU0NjExMTc1NjA0ODc5Mzgw.YMmcrg.GaCI887xy3bA61Fb463K6pgkjoU')
+bot.run(BOT_TOKEN)
