@@ -1,3 +1,4 @@
+from ReactionRoles import ReactionRolesCog
 import discord
 from discord.ext import commands, tasks
 import asyncio
@@ -63,4 +64,5 @@ async def on_ready():
     test_supporter.start()
 
 
+client.add_cog(ReactionRolesCog(client))
 client.run('ODU0NjExMTc1NjA0ODc5Mzgw.YMmcrg.GaCI887xy3bA61Fb463K6pgkjoU')
