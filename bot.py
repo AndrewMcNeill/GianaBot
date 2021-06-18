@@ -12,6 +12,7 @@ from discord.role import Role
 from dotenv import load_dotenv
 import os
 import json
+import emoji
 
 load_dotenv()
 BOT_TOKEN = os.environ.get("bot-token")

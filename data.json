@@ -1,6 +1,7 @@
 {
     "server_id": 134626324256915456,
     "reaction_roles": [
-        { "channel": 854624350900977665, "emoji": "", "role": 0 }
+        { "channel": 855348122459963394, "emoji": "woman_shrugging", "role": 855348293159747584 },
+        { "channel": 855348122459963394, "emoji": "game_die", "role": 855348362986651668 }
     ]
 }

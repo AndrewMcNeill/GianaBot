@@ -1,22 +1,35 @@
 import discord
 from discord.ext import commands
+from discord.guild import Guild
+from discord.member import Member
+import emoji
 
 class ReactionRolesCog(commands.Cog):
     def __init__(self, bot: commands.Bot, json_data):
         self.bot = bot
         self.data = json_data
+        self.channels = [x['channel'] for x in self.data['reaction_roles']]
+        
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
-        if payload.channel_id != 854624350900977665: return
-        print(payload.emoji)
-        print(payload.emoji.name)
-        print(payload.emoji.is_custom_emoji())
-        print(payload.emoji.id)
-        print(payload.emoji == ":game_die:")
-        print(payload.emoji == "game_die")
+        if payload.channel_id not in self.channels: return
+        for reaction_role in self.data['reaction_roles']:
+            if payload.channel_id == reaction_role['channel'] and emoji.demojize(payload.emoji.name).replace(':', '') == reaction_role['emoji']:
+                await payload.member.add_roles(discord.utils.get(payload.member.guild.roles, id=reaction_role['role']))
+                break
+        
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
-        print(payload.emoji.name)
+        if payload.channel_id not in self.channels: return
+        for reaction_role in self.data['reaction_roles']:
+            if payload.channel_id == reaction_role['channel'] and emoji.demojize(payload.emoji.name).replace(':', '') == reaction_role['emoji']:
+                member = self.get_member(payload)
+                await member.remove_roles(discord.utils.get(member.guild.roles, id=reaction_role['role']))
+                break
 
+    def get_member(self, payload: discord.RawReactionActionEvent):
+        guild: Guild = [g for g in self.bot.guilds if g.id == payload.guild_id][0]
+        member: Member = [m for m in guild.members if m.id == payload.user_id][0]
+        return member
