@@ -11,6 +11,7 @@ from discord.role import Role
 
 from dotenv import load_dotenv
 import os
+import json
 
 load_dotenv()
 BOT_TOKEN = os.environ.get("bot-token")
@@ -51,7 +52,10 @@ async def die(context: commands.Context):
 async def on_ready():
     print('Bot is ready.')
 
+json_file = open('data.json')
+json_data = json.load(json_file)
+json_file.close()
 
-bot.add_cog(ReactionRolesCog(bot))
-bot.add_cog(SupporterRolesCog(bot))
+bot.add_cog(ReactionRolesCog(bot, json_data))
+bot.add_cog(SupporterRolesCog(bot, json_data))
 bot.run(BOT_TOKEN)

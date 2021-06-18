@@ -10,8 +10,10 @@ SUPPORTER_ROLES = [854637983370182676, 854657267479871498] # Twitch/Patreon
 SERVER_SUPPORTER = 854638052152311808 # Server supporter
 
 class SupporterRolesCog(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: commands.Bot, json_data):
         self.bot = bot
+        self.data = json_data
+
         self.test_supporter.start()
         
     async def test(member: Member):
@@ -28,7 +30,7 @@ class SupporterRolesCog(commands.Cog):
         guild: Guild
         for guild in self.bot.guilds:
             # TODO: Use Giana's server ID
-            if guild.id != GUILD_ID: continue
+            if guild.id != self.data["server_id"]: continue
 
             member: Member
             for member in guild.members:
@@ -41,5 +43,5 @@ class SupporterRolesCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_update(self, before: Member, after: Member):
-        if after.guild.id == GUILD_ID:
+        if after.guild.id == self.data["server_id"]:
             await SupporterRolesCog.test(after)
