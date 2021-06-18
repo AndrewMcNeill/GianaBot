@@ -1,13 +1,23 @@
 {
     "server_id": 134626324256915456,
     "reaction_roles": [
-        { "channel": 855348122459963394, "emoji": "woman_shrugging", "role": 855348293159747584 },
-        { "channel": 855348122459963394, "emoji": "game_die", "role": 855348362986651668 }
+        { "message": 855364625716609034, "emoji": [
+            { "emoji": "woman_shrugging", "role": 855348293159747584 },
+            { "emoji": "game_die", "role": 855348362986651668 }
+        ]}
     ],
     "supporter_roles": [
         {
             "main_role": 854638052152311808,
             "sub_roles": [854637983370182676, 854657267479871498]
         }
-    ]
+    ],
+    "welcome": {
+        "channel": 854624350900977665,
+        "messages": [
+            "Fuck off and die, {}.",
+            "{} is not welcome here."
+        ]
+    }
+    
 }
