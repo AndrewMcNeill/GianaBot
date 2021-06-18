@@ -1,3 +1,4 @@
+from MinimumMessages import MinimumMessagesCog
 from SupporterRoles import SupporterRolesCog
 from ReactionRoles import ReactionRolesCog
 import discord
@@ -59,4 +60,5 @@ json_file.close()
 
 bot.add_cog(ReactionRolesCog(bot, json_data))
 bot.add_cog(SupporterRolesCog(bot, json_data))
+bot.add_cog(MinimumMessagesCog(bot, json_data))
 bot.run(BOT_TOKEN)
