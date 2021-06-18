@@ -3,5 +3,11 @@
     "reaction_roles": [
         { "channel": 855348122459963394, "emoji": "woman_shrugging", "role": 855348293159747584 },
         { "channel": 855348122459963394, "emoji": "game_die", "role": 855348362986651668 }
+    ],
+    "supporter_roles": [
+        {
+            "main_role": 854638052152311808,
+            "sub_roles": [854637983370182676, 854657267479871498]
+        }
     ]
 }
