@@ -4,6 +4,9 @@
         { "message": 855364625716609034, "emoji": [
             { "emoji": "woman_shrugging", "role": 855348293159747584 },
             { "emoji": "game_die", "role": 855348362986651668 }
+        ]},
+        { "message": 855534910687936523, "emoji": [
+            { "emoji": "tm", "role": 855535141181718548 }
         ]}
     ],
     "supporter_roles": [
@@ -18,5 +21,15 @@
             "Fuck off and die, {}.",
             "{} is not welcome here."
         ]
-    }
+    },
+    "message_counts": [
+        {
+            "role": 855508684216860693,
+            "count": 0
+        },
+        {
+            "role": 855508737020002306,
+            "count": 20
+        }
+    ]
 }

@@ -10,7 +10,6 @@ class ReactionRolesCog(commands.Cog):
         self.data = json_data['reaction_roles']
         self.messages = [x['message'] for x in self.data]
         
-
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
         if payload.message_id not in self.messages: return
