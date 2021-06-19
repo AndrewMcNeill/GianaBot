@@ -3,7 +3,8 @@
     "reaction_roles": [
         { "message": 855364625716609034, "emoji": [
             { "emoji": "woman_shrugging", "role": 855348293159747584 },
-            { "emoji": "game_die", "role": 855348362986651668 }
+            { "emoji": "game_die", "role": 855348362986651668 },
+            { "emoji": "trade_mark", "role": 855535141181718548 }
         ]},
         { "message": 855534910687936523, "emoji": [
             { "emoji": "tm", "role": 855535141181718548 }
