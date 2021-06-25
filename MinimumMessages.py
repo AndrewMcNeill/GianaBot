@@ -13,18 +13,22 @@ class MinimumMessagesCog(commands.Cog):
         self.bot = bot
         self.data = json_data
         self.message_data = sorted(json_data['message_counts'], key=lambda x: x['count'], reverse=True)
+        self.message_data = [(x['count'], x['role']) for x in self.message_data]
+        print(self.message_data)
         self.message_counts = {}
 
     async def add_role(self, member: Member):
         try:
-            role_tier = next(x for x in self.message_data if x['count'] <= self.message_counts[member.id])
-            if role_tier['role'] not in [r.id for r in member.roles]:
+            role_tier = max([x for x in self.message_data if x[0] <= self.message_counts[member.id]], key=lambda x:x[0])
+            print(self.message_counts[member.id], role_tier)
+            if role_tier[1] not in [r.id for r in member.roles]:
                 for count_role in self.message_data:
-                    await member.remove_roles(discord.utils.get(member.guild.roles, id=count_role['role']))
-                await member.add_roles(discord.utils.get(member.guild.roles, id=role_tier['role']))
-            pass
+                    if count_role == role_tier:
+                        continue
+                    await member.remove_roles(discord.utils.get(member.guild.roles, id=count_role[1]))
+                await member.add_roles(discord.utils.get(member.guild.roles, id=role_tier[1]))
         except KeyError:
-            pass
+            print(f"Member {member} not valid")
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -39,21 +43,21 @@ class MinimumMessagesCog(commands.Cog):
                 try:
                     self.message_counts[message.author.id] += 1
                 except KeyError:
+                    #print(f"Member {message.author} no longer in server")
                     pass
         for member in guild.members:
             await self.add_role(member)
     
     @commands.Cog.listener()
     async def on_message(self, message: Message):
-        try:
-            self.message_counts[message.author.id] += 1
-            await self.add_role(message.author)
-        except KeyError:
-            pass
+        if not message.author.id in self.message_counts:
+            self.message_counts[message.author.id] = 0
+        self.message_counts[message.author.id] += 1
+        await self.add_role(message.author)
 
     @commands.Cog.listener()
     async def on_message_delete(self, message: Message):
         try:
             self.message_counts[message.author.id] -= 1
         except KeyError:
-            pass
+            print(f"Member {message.author} no longer in server")
