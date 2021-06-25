@@ -14,13 +14,18 @@ class MinimumMessagesCog(commands.Cog):
         self.data = json_data
         self.message_data = sorted(json_data['message_counts'], key=lambda x: x['count'], reverse=True)
         self.message_data = [(x['count'], x['role']) for x in self.message_data]
-        print(self.message_data)
         self.message_counts = {}
 
-    async def add_role(self, member: Member):
+    async def add_role(self, member):
+        print(type(member))
+        guild: Guild = self.bot.get_guild(self.data['server_id'])
+        try:
+            member = await guild.fetch_member(member.id)
+        except:
+            return
         try:
             role_tier = max([x for x in self.message_data if x[0] <= self.message_counts[member.id]], key=lambda x:x[0])
-            print(self.message_counts[member.id], role_tier)
+            #print(self.message_counts[member.id], role_tier)
             if role_tier[1] not in [r.id for r in member.roles]:
                 for count_role in self.message_data:
                     if count_role == role_tier:
