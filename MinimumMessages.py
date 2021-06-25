@@ -17,8 +17,7 @@ class MinimumMessagesCog(commands.Cog):
         self.message_counts = {}
 
     async def add_role(self, member):
-        print(type(member))
-        guild: Guild = self.bot.get_guild(self.data['server_id'])
+        guild: Guild = await self.bot.fetch_guild(self.data['server_id'])
         try:
             member = await guild.fetch_member(member.id)
         except:
@@ -37,21 +36,23 @@ class MinimumMessagesCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        guild: Guild = self.bot.get_guild(self.data['server_id'])
+        print("Counting member messages")
+        guild: Guild = await self.bot.fetch_guild(self.data['server_id'])
         member: Member
-        for member in guild.members:
+        async for member in guild.fetch_members():
             self.message_counts[member.id] = 0
         channel: TextChannel
-        for channel in guild.text_channels:
+        for channel in await guild.fetch_channels():
+            if not isinstance(channel, TextChannel): continue
             message: Message
             async for message in channel.history(limit=999999):
                 try:
                     self.message_counts[message.author.id] += 1
                 except KeyError:
-                    #print(f"Member {message.author} no longer in server")
-                    pass
-        for member in guild.members:
+                    self.message_counts[message.author.id] = 1
+        async for member in guild.fetch_members():
             await self.add_role(member)
+        print("Member messages counted")
     
     @commands.Cog.listener()
     async def on_message(self, message: Message):
@@ -66,3 +67,8 @@ class MinimumMessagesCog(commands.Cog):
             self.message_counts[message.author.id] -= 1
         except KeyError:
             print(f"Member {message.author} no longer in server")
+
+    @commands.Cog.listener()
+    async def on_member_join(self, member: discord.Member):
+        self.message_counts[member.id] = 0
+        await self.add_role(member)
